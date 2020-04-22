@@ -8,14 +8,14 @@ import * as yup from 'yup';
 
 const url = 'https://reqres.in/api/users';
 
-const initUserValues = [
-	{
-		username: '',
-		email: '',
-		password: '',
-		terms: false
-	}
-]
+// const initUserValues = [
+// 	{
+// 		username: '',
+// 		email: '',
+// 		password: '',
+// 		terms: false
+// 	}
+// ]
 
 const initFormValues = {
 	username: '',
@@ -28,43 +28,65 @@ const initFormErrors = {
 	username: '',
 	email: '',
 	password: '',
-	terms: false
+	// terms: ''
 }
 
 const formSchema = yup.object().shape({
 	username: yup
 		.string()
-		.min(3, 'Username must have at least 3 characters')
-		.required('Username is required'),
+		.required('Username is required')
+		.min(3, 'Username must have at least 3 characters'),
 	email: yup
 		.string()
 		.email('Please enter a valid email address')
 		.required('Email address is required'),
 	password: yup
 		.string()
-		.min(6, 'Password needs a minimum of 6 characters')
-		.required('Password is required'),
-	terms: yup
-		.boolean()
-		.oneOf([true], 'In order to proceed, you must agree to the terms of service by checking the checkbox')
+		.required('Password is required')
+		.min(6, 'Password needs a minimum of 6 characters'),
+	// terms: yup
+	// 	.boolean()
+	// 	.required('test')
+		// .oneOf([false], 'In order to proceed, you must agree to the terms of service by checking the checkbox')
 })
 
 function App() {
 
-	const [users, setUsers] = useState(initUserValues);
+	const [users, setUsers] = useState([]);
 	const [formValues, setFormValues] = useState(initFormValues);
 	const [formErrors, setFormErrors] = useState(initFormErrors);
 	const [submitAvailability, setSubmitAvailability] = useState(true);
+
+	const getUsers = () => {
+		axios.get(url)
+			.then(res => {
+				setUsers(res.data);
+			})
+			.catch(err => {
+				console.log('error');
+			})
+	}
+
+	useEffect(() => {
+		getUsers();
+	}, [])
 
 	const postUser = user => {
 		axios.post(url, user)
 			.then(res => {
 				setUsers([...users, res.data]);
 			})
-			.catch( err => {
+			.catch(err => {
 				console.log('error');
 			})
 	}
+
+	useEffect(() => {
+		formSchema.isValid(formValues)
+			.then(valid => {
+				setSubmitAvailability(!valid)
+			})
+	}, [formValues])
 
 	const onInputChange = evt => {
 
@@ -98,13 +120,6 @@ function App() {
 		});
 	}
 
-	useEffect(() => {
-		formSchema.isValid(formValues)
-			.then(valid => {
-				setSubmitAvailability(!valid)
-			})
-	}, [formValues])
-
 	const onSubmit = evt => {
 		evt.preventDefault();
 
@@ -124,7 +139,7 @@ function App() {
 			<header className="App-header">
 				<h1>User Onboarding</h1>
 			</header>
-			<Form values={formValues} onInputChange={onInputChange} onCheckboxChange={onCheckboxChange} onSubmit={onSubmit} submitAvailability={submitAvailability}/>
+			<Form values={formValues} onInputChange={onInputChange} onCheckboxChange={onCheckboxChange} onSubmit={onSubmit} submitAvailability={submitAvailability} errors={formErrors}/>
 		</div>
 	);
 }

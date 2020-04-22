@@ -7,11 +7,17 @@ function Form(props) {
 		onInputChange,
 		onCheckboxChange,
 		onSubmit,
-		submitAvailability
+		submitAvailability,
+		errors
 	} = props;
 	return (
 		<form className='form'>
 			<h2>New User</h2>
+			<div>
+				{<p>{errors.username}</p>}
+				{<p>{errors.email}</p>}
+				{<p>{errors.password}</p>}
+			</div>
 			<label>Username: <input value={values.username} onChange={onInputChange} name='username' type='text'/></label>
 			<label>Email: <input value={values.email} onChange={onInputChange} name='email' type='text'/></label>
 			<label>Password: <input value={values.password} onChange={onInputChange} name='password' type='text'/></label>
