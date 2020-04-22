@@ -24,6 +24,13 @@ const initFormValues = {
 	terms: false
 }
 
+const initFormErrors = {
+	username: '',
+	email: '',
+	password: '',
+	terms: false
+}
+
 const formSchema = yup.object().shape({
 	username: yup
 		.string()
@@ -46,13 +53,13 @@ function App() {
 
 	const [users, setUsers] = useState(initUserValues);
 	const [formValues, setFormValues] = useState(initFormValues);
-
+	const [formErrors, setFormErrors] = useState(initFormErrors);
 	const [submitAvailability, setSubmitAvailability] = useState(true);
 
 	const postUser = user => {
 		axios.post(url, user)
 			.then(res => {
-				setUsers([...users, res.data])
+				setUsers([...users, res.data]);
 			})
 			.catch( err => {
 				console.log('error');
@@ -60,6 +67,24 @@ function App() {
 	}
 
 	const onInputChange = evt => {
+
+		evt.persist();
+		yup
+			.reach(formSchema, evt.target.name)
+			.validate(evt.target.value)
+			.then(valid => {
+				setFormErrors({
+					...formErrors,
+					[evt.target.name]: ''
+				});
+			})
+			.catch(err => {
+				setFormErrors({
+					...formErrors,
+					[evt.target.name]: err.errors[0]
+				});
+			})
+
 		setFormValues({
 			...formValues,
 			[evt.target.name]: evt.target.value
@@ -70,7 +95,7 @@ function App() {
 		setFormValues({
 			...formValues,
 			[evt.target.name]: evt.target.checked
-		})
+		});
 	}
 
 	useEffect(() => {
