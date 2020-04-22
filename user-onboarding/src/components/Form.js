@@ -1,12 +1,17 @@
 import React from 'react';
+import './App.css';
 
 function Form(props) {
+	const {
+		values,
+		onInputChange
+	} = props;
 	return (
 		<form className='form'>
 			<h2>New User</h2>
-			<label>Name: <input name='name' type='text'/></label>
-			<label>Email: <input name='email' type='text'/></label>
-			<label>Password: <input name='password' type='text'/></label>
+			<label>Name: <input value={values.username} onChange={onInputChange} name='username' type='text'/></label>
+			<label>Email: <input value={values.email} onChange={onInputChange} name='email' type='text'/></label>
+			<label>Password: <input value={values.password} onChange={onInputChange} name='password' type='text'/></label>
 			<label><input name='terms' type='checkbox'/>Terms of Service</label>
 			<button>Submit</button>
 		</form>
