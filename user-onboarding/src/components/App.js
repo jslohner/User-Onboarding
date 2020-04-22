@@ -32,7 +32,10 @@ function App() {
 	}
 
 	const onCheckboxChange = evt => {
-
+		setFormValues({
+			...formValues,
+			[evt.target.name]: evt.target.checked
+		})
 	}
 
 	const onSubmit = evt => {
@@ -44,7 +47,7 @@ function App() {
 			<header className="App-header">
 				<h1>User Onboarding</h1>
 			</header>
-			<Form values={formValues} onInputChange={onInputChange}/>
+			<Form values={formValues} onInputChange={onInputChange} onCheckboxChange={onCheckboxChange}/>
 		</div>
 	);
 }

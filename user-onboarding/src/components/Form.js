@@ -4,7 +4,8 @@ import './App.css';
 function Form(props) {
 	const {
 		values,
-		onInputChange
+		onInputChange,
+		onCheckboxChange
 	} = props;
 	return (
 		<form className='form'>
@@ -12,7 +13,7 @@ function Form(props) {
 			<label>Name: <input value={values.username} onChange={onInputChange} name='username' type='text'/></label>
 			<label>Email: <input value={values.email} onChange={onInputChange} name='email' type='text'/></label>
 			<label>Password: <input value={values.password} onChange={onInputChange} name='password' type='text'/></label>
-			<label><input name='terms' type='checkbox'/>Terms of Service</label>
+			<label><input checked={values.terms} onChange={onCheckboxChange} name='terms' type='checkbox'/>Terms of Service</label>
 			<button>Submit</button>
 		</form>
 	);
