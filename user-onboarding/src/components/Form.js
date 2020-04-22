@@ -17,6 +17,7 @@ function Form(props) {
 				{<p>{errors.username}</p>}
 				{<p>{errors.email}</p>}
 				{<p>{errors.password}</p>}
+				{<p>{errors.terms}</p>}
 			</div>
 			<label>Username: <input value={values.username} onChange={onInputChange} name='username' type='text'/></label>
 			<label>Email: <input value={values.email} onChange={onInputChange} name='email' type='text'/></label>
@@ -28,5 +29,3 @@ function Form(props) {
 }
 
 export default Form;
-
-// - [ ] A Submit button to send our form data to the server.
